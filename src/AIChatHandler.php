@@ -137,12 +137,12 @@ class AIChatHandler extends GPTChat
 
             if ($response['success']) {
                 $this->messages[] = ChatMessage::from(
-                    role: ChatRole::Assistant,
+                    role: ChatRole::ASSISTANT,
                     content: $response['content'],
                 );
             } else {
                 $this->messages[] = ChatMessage::from(
-                    role: ChatRole::Assistant,
+                    role: ChatRole::ASSISTANT,
                     content: $response['content'] ?? 'Sorry, I encountered an error. Please try again.',
                 );
             }
@@ -154,7 +154,7 @@ class AIChatHandler extends GPTChat
             ]);
 
             $this->messages[] = ChatMessage::from(
-                role: ChatRole::Assistant,
+                role: ChatRole::ASSISTANT,
                 content: 'Sorry, I encountered an error. Please try again.',
             );
         }
