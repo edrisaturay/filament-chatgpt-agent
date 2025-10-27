@@ -24,9 +24,9 @@ class AIChatAgentPlugin implements Plugin
     protected string|Closure|null $buttonText = null;
     protected string|Closure $buttonIcon = 'heroicon-m-sparkles';
     protected string|Closure|null $sendingText = null;
-    protected string|Closure $model = 'gpt-4o-mini';
-    protected float|Closure|null $temperature = 0.7;
-    protected int|Closure|null $maxTokens = null;
+    protected string|Closure $model;
+    protected float|Closure|null $temperature;
+    protected int|Closure|null $maxTokens;
     protected string|Closure $systemMessage = '';
     protected array|Closure $functions = [];
     protected bool|Closure|null $pageWatcherEnabled = false;
@@ -37,6 +37,20 @@ class AIChatAgentPlugin implements Plugin
     protected bool|string|Closure|null $logoUrl = false;
     protected string|Closure $provider = 'chatgpt';
     protected array|Closure $providerConfig = [];
+
+    /**
+     * Initialize the plugin with environment variable defaults.
+     */
+    public function __construct()
+    {
+        $this->model = env('FILAMENT_AI_CHAT_MODEL', 'gpt-4o-mini');
+        
+        $temperature = env('FILAMENT_AI_CHAT_TEMPERATURE');
+        $this->temperature = $temperature !== null ? (float) $temperature : 0.7;
+        
+        $maxTokens = env('FILAMENT_AI_CHAT_MAX_TOKENS');
+        $this->maxTokens = $maxTokens !== null ? (int) $maxTokens : null;
+    }
 
     /**
      * Create a new instance of the plugin.

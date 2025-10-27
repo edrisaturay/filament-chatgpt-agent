@@ -134,7 +134,31 @@ CUSTOM_AI_API_KEY=your-api-key
 // In your Filament panel configuration
 AIChatAgentPlugin::make()
     ->provider(env('FILAMENT_AI_CHAT_PROVIDER', 'chatgpt'))
+    ->model(env('FILAMENT_AI_CHAT_MODEL', 'gpt-4o-mini'))
+    ->temperature(env('FILAMENT_AI_CHAT_TEMPERATURE', 0.7))
+    ->maxTokens(env('FILAMENT_AI_CHAT_MAX_TOKENS', 2000))
     ->providerConfig(ProviderConfigHelper::getActiveProviderConfig())
+```
+
+**Environment Variables:**
+```env
+# AI Provider Configuration
+FILAMENT_AI_CHAT_PROVIDER=chatgpt
+
+# AI Model Configuration
+FILAMENT_AI_CHAT_MODEL=gpt-4o-mini
+FILAMENT_AI_CHAT_TEMPERATURE=0.7
+FILAMENT_AI_CHAT_MAX_TOKENS=2000
+
+# Provider-specific API keys
+OPENAI_API_KEY=your-openai-api-key
+AZURE_OPENAI_API_KEY=your-azure-openai-api-key
+AZURE_OPENAI_ENDPOINT=https://your-resource.openai.azure.com/
+AZURE_OPENAI_DEPLOYMENT_NAME=your-deployment-name
+OLLAMA_BASE_URL=http://localhost:11434
+LMSTUDIO_BASE_URL=http://localhost:1234
+CUSTOM_ENDPOINT_URL=https://your-custom-endpoint.com/v1
+CUSTOM_ENDPOINT_API_KEY=your-custom-api-key
 ```
 
 #### Direct Configuration
