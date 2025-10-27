@@ -1,6 +1,6 @@
 <?php
 
-namespace EdrisaTuray\FilamentChatgptAgent;
+namespace EdrisaTuray\FilamentAiChatAgent;
 
 use MalteKuhr\LaravelGPT\Enums\ChatRole;
 use MalteKuhr\LaravelGPT\GPTChat;
@@ -15,7 +15,7 @@ class ChatgptChat extends GPTChat
      */
     public function systemMessage(): ?string
     {
-        return filament('chatgpt-agent')->getSystemMessage();
+        return filament('ai-chat-agent')->getSystemMessage();
     }
 
     /**
@@ -27,7 +27,7 @@ class ChatgptChat extends GPTChat
      */
     public function functions(): ?array
     {
-        return filament('chatgpt-agent')->getFunctions();
+        return filament('ai-chat-agent')->getFunctions();
     }
 
     /**
@@ -47,17 +47,17 @@ class ChatgptChat extends GPTChat
 
     public function model(): string
     {
-        return filament('chatgpt-agent')->getModel();
+        return filament('ai-chat-agent')->getModel();
     }
 
     public function temperature(): ?float
     {
-        return filament('chatgpt-agent')->getTemperature();
+        return filament('ai-chat-agent')->getTemperature();
     }
 
     public function maxTokens(): ?int
     {
-        return filament('chatgpt-agent')->getMaxTokens();
+        return filament('ai-chat-agent')->getMaxTokens();
     }
 
     public function loadMessages(array $messages): static

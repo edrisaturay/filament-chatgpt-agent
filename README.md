@@ -2,18 +2,18 @@
 
 Filament ChatGPT Agent is a Filament plugin that allows you to easily integrate ChatGPT into your Filament project, enabling ChatGPT to access context information from your project by creating GPT functions.
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/EdrisaTuray/filament-chatgpt-agent.svg?style=flat-square)](https://packagist.org/packages/EdrisaTuray/filament-chatgpt-agent)
-[![Total Downloads](https://img.shields.io/packagist/dt/EdrisaTuray/filament-chatgpt-agent.svg?style=flat-square)](https://packagist.org/packages/EdrisaTuray/filament-chatgpt-agent)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/EdrisaTuray/filament-ai-chat-agent.svg?style=flat-square)](https://packagist.org/packages/EdrisaTuray/filament-ai-chat-agent)
+[![Total Downloads](https://img.shields.io/packagist/dt/EdrisaTuray/filament-ai-chat-agent.svg?style=flat-square)](https://packagist.org/packages/EdrisaTuray/filament-ai-chat-agent)
 
 ## Preview:
 Dark Mode:
-![](https://raw.githubusercontent.com/EdrisaTuray/filament-chatgpt-agent/main/screenshots/darkmode.png)
+![](https://raw.githubusercontent.com/EdrisaTuray/filament-ai-chat-agent/main/screenshots/darkmode.png)
 Select a text to quickly insert it:
-![](https://raw.githubusercontent.com/EdrisaTuray/filament-chatgpt-agent/main/screenshots/select-to-insert.png)
+![](https://raw.githubusercontent.com/EdrisaTuray/filament-ai-chat-agent/main/screenshots/select-to-insert.png)
 Light Mode:
-![](https://raw.githubusercontent.com/EdrisaTuray/filament-chatgpt-agent/main/screenshots/lightmode.png)
+![](https://raw.githubusercontent.com/EdrisaTuray/filament-ai-chat-agent/main/screenshots/lightmode.png)
 ChatGPT can read the page content for extra context:
-![](https://raw.githubusercontent.com/EdrisaTuray/filament-chatgpt-agent/main/screenshots/page-watcher.png)
+![](https://raw.githubusercontent.com/EdrisaTuray/filament-ai-chat-agent/main/screenshots/page-watcher.png)
 
 ## Features
 
@@ -51,7 +51,7 @@ OPENAI_API_KEY=YOUR_API_KEY
 Now install this package:
 
 ```bash
-composer require edrisaturay/filament-chatgpt-agent
+composer require edrisaturay/filament-ai-chat-agent
 ```
 
 ## Views
@@ -59,7 +59,7 @@ composer require edrisaturay/filament-chatgpt-agent
 Optionally, you can publish the views:
 
 ```bash
-php artisan vendor:publish --tag="chatgpt-agent-views"
+php artisan vendor:publish --tag="ai-chat-agent-views"
 ```
 
 ## Translations
@@ -67,7 +67,7 @@ php artisan vendor:publish --tag="chatgpt-agent-views"
 Optionally, you can publish translations:
 
 ```bash
-php artisan vendor:publish --tag="chatgpt-agent-translations"
+php artisan vendor:publish --tag="ai-chat-agent-translations"
 ```
 
 ## Usage
@@ -78,7 +78,7 @@ Modify your Filament [Panel Configuration](https://laravel-filament.cn/docs/en/3
 
 
 ```php
-use EdrisaTuray\FilamentChatgptAgent\ChatgptAgentPlugin;
+use EdrisaTuray\FilamentAiChatAgent\ChatgptAgentPlugin;
 
     public function panel(Panel $panel): Panel
     {
@@ -97,7 +97,7 @@ Also see [all available options](#available-options) below.
 
 ```php
 use App\GPT\Functions\YourCustomGPTFunction;
-use EdrisaTuray\FilamentChatgptAgent\ChatgptAgentPlugin;
+use EdrisaTuray\FilamentAiChatAgent\ChatgptAgentPlugin;
 
 ...
 
@@ -137,7 +137,7 @@ You can embed the ChatGPT agent in any Blade file:
 
 ```blade
 <body>  
-    @livewire('filament-chatgpt-agent')  
+    @livewire('fi-ai-chat-agent')  
 </body>
 ```
 
@@ -150,7 +150,7 @@ You can embed the ChatGPT agent in any Blade file:
 
     ...
 
-    @livewire('filament-chatgpt-agent')
+    @livewire('fi-ai-chat-agent')
 </body>
 ```
 
@@ -183,7 +183,7 @@ Refer to the [Laravel GPT documentation](https://github.com/maltekuhr/laravel-gp
 
 ## Page Watcher
 
-![](https://raw.githubusercontent.com/EdrisaTuray/filament-chatgpt-agent/main/screenshots/page-watcher.png)
+![](https://raw.githubusercontent.com/EdrisaTuray/filament-ai-chat-agent/main/screenshots/page-watcher.png)
 
 The **Page Watcher** feature allows the ChatGPT agent to receive additional context about the current page by including the `.innerText` of a specified page element (default: `.fi-page`, the Filament page container) along with the page URL in each message sent to ChatGPT. This helps provide better contextual responses based on the page content.
 

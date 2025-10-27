@@ -1,6 +1,6 @@
 <?php
 
-namespace EdrisaTuray\FilamentChatgptAgent;
+namespace EdrisaTuray\FilamentAiChatAgent;
 
 use Filament\Contracts\Plugin;
 use Filament\Panel;
@@ -32,7 +32,7 @@ class ChatgptAgentPlugin implements Plugin
 
     public function getId(): string
     {
-        return 'chatgpt-agent';
+        return 'ai-chat-agent';
     }
 
     public function register(Panel $panel): void
@@ -40,7 +40,7 @@ class ChatgptAgentPlugin implements Plugin
         $panel
             ->renderHook(
                 'panels::body.end',
-                fn () => view('chatgpt-agent::components.filament-chatgpt-agent'),
+                fn () => view('ai-chat-agent::components.filament-ai-chat-agent'),
             );
     }
 
@@ -77,7 +77,7 @@ class ChatgptAgentPlugin implements Plugin
             return ($this->botName)();
         }
 
-        return $this->botName ?? __('chatgpt-agent::translations.bot_name');
+        return $this->botName ?? __('ai-chat-agent::translations.bot_name');
     }
 
     public function buttonText(string|Closure $text): static
@@ -93,7 +93,7 @@ class ChatgptAgentPlugin implements Plugin
             return ($this->buttonText)();
         }
 
-        return $this->buttonText ?? __('chatgpt-agent::translations.button_text');
+        return $this->buttonText ?? __('ai-chat-agent::translations.button_text');
     }
 
     public function buttonIcon(string|Closure $icon): static
@@ -125,7 +125,7 @@ class ChatgptAgentPlugin implements Plugin
             return ($this->sendingText)();
         }
 
-        return $this->sendingText ??__('chatgpt-agent::translations.sending_text');
+        return $this->sendingText ??__('ai-chat-agent::translations.sending_text');
     }
 
     public function model(string|Closure $model): static
@@ -266,7 +266,7 @@ class ChatgptAgentPlugin implements Plugin
         }
 
         if (is_null($this->pageWatcherMessage)){
-            return __('chatgpt-agent::translations.page_watcher_message');
+            return __('ai-chat-agent::translations.page_watcher_message');
         }
 
         return $this->pageWatcherMessage;

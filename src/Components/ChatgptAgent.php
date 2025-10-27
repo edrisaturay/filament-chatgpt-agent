@@ -1,8 +1,8 @@
 <?php
 
-namespace EdrisaTuray\FilamentChatgptAgent\Components;
+namespace EdrisaTuray\FilamentAiChatAgent\Components;
 
-use EdrisaTuray\FilamentChatgptAgent\ChatgptChat;
+use EdrisaTuray\FilamentAiChatAgent\ChatgptChat;
 use Livewire\Attributes\Session;
 use Livewire\Component;
 
@@ -42,13 +42,13 @@ class ChatgptAgent extends Component
 
     public function __construct()
     {
-        $this->sessionKey = auth()->id() . '-chatgpt-agent-messages';
+        $this->sessionKey = auth()->id() . '-ai-chat-agent-messages';
     }
 
     public function mount(): void
     {
         $this->panelHidden = session($this->sessionKey . '-panelHidden', true);
-        $this->winWidth = "width:" . filament('chatgpt-agent')->getDefaultPanelWidth() . ";";
+        $this->winWidth = "width:" . filament('ai-chat-agent')->getDefaultPanelWidth() . ";";
         $this->winPosition = session($this->sessionKey . '-winPosition', '');
         $this->showPositionBtn = true;
         $this->messages = session(
@@ -56,19 +56,19 @@ class ChatgptAgent extends Component
             $this->getDefaultMessages()
         );
         $this->question = "";
-        $this->name = filament('chatgpt-agent')->getBotName();
-        $this->buttonText = filament('chatgpt-agent')->getButtonText();
-        $this->buttonIcon = filament('chatgpt-agent')->getButtonIcon();
-        $this->sendingText = filament('chatgpt-agent')->getSendingText();
+        $this->name = filament('ai-chat-agent')->getBotName();
+        $this->buttonText = filament('ai-chat-agent')->getButtonText();
+        $this->buttonIcon = filament('ai-chat-agent')->getButtonIcon();
+        $this->sendingText = filament('ai-chat-agent')->getSendingText();
         $this->questionContext = '';
-        $this->pageWatcherEnabled = filament('chatgpt-agent')->isPageWatcherEnabled();
-        $this->pageWatcherSelector = filament('chatgpt-agent')->getPageWatcherSelector();
-        $this->logoUrl = filament('chatgpt-agent')->getLogoUrl();
+        $this->pageWatcherEnabled = filament('ai-chat-agent')->isPageWatcherEnabled();
+        $this->pageWatcherSelector = filament('ai-chat-agent')->getPageWatcherSelector();
+        $this->logoUrl = filament('ai-chat-agent')->getLogoUrl();
     }
 
     public function render()
     {
-        return view('chatgpt-agent::livewire.chat-bot');
+        return view('ai-chat-agent::livewire.chat-bot');
     }
 
     public function sendMessage(): void
@@ -89,11 +89,11 @@ class ChatgptAgent extends Component
 
     public function changeWinWidth(): void
     {
-        if ($this->winWidth == "width:" . filament('chatgpt-agent')->getDefaultPanelWidth() . ";") {
+        if ($this->winWidth == "width:" . filament('ai-chat-agent')->getDefaultPanelWidth() . ";") {
             $this->winWidth = "width:100%;";
             $this->showPositionBtn = false;
         } else {
-            $this->winWidth = "width:" . filament('chatgpt-agent')->getDefaultPanelWidth() . ";";
+            $this->winWidth = "width:" . filament('ai-chat-agent')->getDefaultPanelWidth() . ";";
             $this->showPositionBtn = true;
         }
     }
@@ -125,7 +125,7 @@ class ChatgptAgent extends Component
         $chat = new ChatgptChat();
         $chat->loadMessages($this->messages);
         if ($this->pageWatcherEnabled) {
-            $chat->addMessage(filament('chatgpt-agent')->getPageWatcherMessage() . $this->questionContext);
+            $chat->addMessage(filament('ai-chat-agent')->getPageWatcherMessage() . $this->questionContext);
             \Log::info($this->questionContext);
         }
 
@@ -139,9 +139,9 @@ class ChatgptAgent extends Component
 
     protected function getDefaultMessages(): array
     {
-        return filament('chatgpt-agent')->getStartMessage() ?
+        return filament('ai-chat-agent')->getStartMessage() ?
             [
-                ['role' => 'assistant', 'content' => filament('chatgpt-agent')->getStartMessage()],
+                ['role' => 'assistant', 'content' => filament('ai-chat-agent')->getStartMessage()],
             ] : [];
     }
 }
