@@ -48,6 +48,9 @@ class FilamentAiChatAgentServiceProvider extends PackageServiceProvider
     public function packageBooted(): void
     {
         Livewire::component('fi-ai-chat-agent', ChatgptAgent::class);
+        
+        // Register Blade components
+        Blade::componentNamespace('EdrisaTuray\\FilamentAiChatAgent\\View\\Components', 'ai-chat-agent');
     }
 
     /**

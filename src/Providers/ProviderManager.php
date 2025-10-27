@@ -92,7 +92,7 @@ class ProviderManager
                 $info[$id] = [
                     'id' => $id,
                     'name' => 'Unknown Provider',
-                    'icon' => 'ai-chat-agent::components.custom-endpoint.svg',
+                    'icon' => 'ai-chat-agent::components.custom-endpoint-svg',
                     'default_model' => 'unknown',
                     'available_models' => [],
                     'configuration_fields' => [],
