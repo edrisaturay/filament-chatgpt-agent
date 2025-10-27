@@ -3,6 +3,7 @@
 namespace EdrisaTuray\FilamentAiChatAgent\Components;
 
 use EdrisaTuray\FilamentAiChatAgent\ChatgptChat;
+use EdrisaTuray\FilamentAiChatAgent\Providers\ProviderManager;
 use Livewire\Attributes\Session;
 use Livewire\Component;
 
@@ -38,6 +39,8 @@ class ChatgptAgent extends Component
 
     public string|bool $logoUrl;
 
+    public string $providerIcon;
+
     private string $sessionKey;
 
     public function __construct()
@@ -64,6 +67,11 @@ class ChatgptAgent extends Component
         $this->pageWatcherEnabled = filament('ai-chat-agent')->isPageWatcherEnabled();
         $this->pageWatcherSelector = filament('ai-chat-agent')->getPageWatcherSelector();
         $this->logoUrl = filament('ai-chat-agent')->getLogoUrl();
+        
+        // Get provider icon
+        $providerManager = app(ProviderManager::class);
+        $provider = $providerManager->getProvider(filament('ai-chat-agent')->getProvider());
+        $this->providerIcon = $provider->getIcon();
     }
 
     public function render()

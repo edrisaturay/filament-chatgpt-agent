@@ -5,9 +5,20 @@ namespace EdrisaTuray\FilamentAiChatAgent;
 use MalteKuhr\LaravelGPT\Enums\ChatRole;
 use MalteKuhr\LaravelGPT\GPTChat;
 use MalteKuhr\LaravelGPT\Models\ChatMessage;
+use EdrisaTuray\FilamentAiChatAgent\Providers\ProviderManager;
 
 class ChatgptChat extends GPTChat
 {
+    protected ProviderManager $providerManager;
+    protected string $provider;
+    protected array $providerConfig;
+
+    public function __construct()
+    {
+        $this->providerManager = app(ProviderManager::class);
+        $this->provider = filament('ai-chat-agent')->getProvider();
+        $this->providerConfig = filament('ai-chat-agent')->getProviderConfig();
+    }
     /**
      * The message which explains the assistant what to do and which rules to follow.
      *
@@ -70,5 +81,50 @@ class ChatgptChat extends GPTChat
         })->toArray();
 
         return $this;
+    }
+
+    public function send(): void
+    {
+        try {
+            $aiProvider = $this->providerManager->getProvider($this->provider, $this->providerConfig);
+            
+            $messages = collect($this->messages)->map(function ($message) {
+                return [
+                    'role' => $message->role->value,
+                    'content' => $message->content,
+                ];
+            })->toArray();
+
+            $response = $aiProvider
+                ->setModel($this->model())
+                ->setTemperature($this->temperature())
+                ->setMaxTokens($this->maxTokens())
+                ->setSystemMessage($this->systemMessage())
+                ->setFunctions($this->functions())
+                ->sendMessage($messages);
+
+            if ($response['success']) {
+                $this->messages[] = ChatMessage::from(
+                    role: ChatRole::Assistant,
+                    content: $response['content'],
+                );
+            } else {
+                $this->messages[] = ChatMessage::from(
+                    role: ChatRole::Assistant,
+                    content: $response['content'] ?? 'Sorry, I encountered an error. Please try again.',
+                );
+            }
+        } catch (\Exception $e) {
+            \Log::error('AI Chat Error', [
+                'provider' => $this->provider,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+
+            $this->messages[] = ChatMessage::from(
+                role: ChatRole::Assistant,
+                content: 'Sorry, I encountered an error. Please try again.',
+            );
+        }
     }
 }

@@ -54,7 +54,7 @@
                                         <img src="{{ $logoUrl }}" alt="{{ $name }}" width="41" height="41" class="relative h-7 w-7 p-1 rounded-full" />
                                     @else
                                         <div class="relative h-5 w-5 p-1 rounded-full text-white flex items-center justify-center bg-primary-500">
-                                            <x-ai-chat-agent::chatgpt-svg />
+                                            <x-dynamic-component :component="$providerIcon" />
                                         </div>
                                     @endif
                                 </div>

@@ -5,6 +5,7 @@ namespace EdrisaTuray\FilamentAiChatAgent;
 use Filament\Contracts\Plugin;
 use Filament\Panel;
 use Closure;
+use EdrisaTuray\FilamentAiChatAgent\Providers\ProviderManager;
 
 class ChatgptAgentPlugin implements Plugin
 {
@@ -24,6 +25,8 @@ class ChatgptAgentPlugin implements Plugin
     protected string|Closure $defaultPanelWidth = '350px';
     protected bool|string|Closure|null $startMessage = false;
     protected bool|string|Closure|null $logoUrl = false;
+    protected string|Closure $provider = 'chatgpt';
+    protected array|Closure $providerConfig = [];
 
     public static function make(): static
     {
@@ -47,6 +50,43 @@ class ChatgptAgentPlugin implements Plugin
     public function boot(Panel $panel): void
     {
         //
+    }
+
+    public function provider(string|Closure $provider): static
+    {
+        $this->provider = $provider;
+
+        return $this;
+    }
+
+    public function getProvider(): string
+    {
+        if (is_callable($this->provider)) {
+            return ($this->provider)();
+        }
+
+        return $this->provider;
+    }
+
+    public function providerConfig(array|Closure $config): static
+    {
+        $this->providerConfig = $config;
+
+        return $this;
+    }
+
+    public function getProviderConfig(): array
+    {
+        if (is_callable($this->providerConfig)) {
+            return ($this->providerConfig)();
+        }
+
+        return $this->providerConfig;
+    }
+
+    public function getProviderManager(): ProviderManager
+    {
+        return app(ProviderManager::class);
     }
 
     public function enabled(bool|Closure $enabled): static

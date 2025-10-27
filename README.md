@@ -22,12 +22,13 @@ ChatGPT can read the page content for extra context:
 
 I asked ChatGPT to generate a full list of the plugin features:
 
-- **Seamless ChatGPT Integration**: Easily integrates OpenAI’s ChatGPT into your Filament project.
+- **Multiple AI Providers**: Support for Azure OpenAI, Ollama, LM Studio, and custom endpoints.
+- **Seamless AI Integration**: Easily integrates multiple AI providers into your Filament project.
 - **Customizable Chat Interface**: Modify bot name, button text, panel width, and more.
 - **Select To Insert**: Select some text on the page and insert that with one click.
 - **Supports Laravel GPT Functions**: Define and register custom GPT functions to enhance AI capabilities.
-- **Page Watcher**: Sends the page content and URL to ChatGPT for better contextual responses.
-- **Configurable OpenAI Model**: Choose different models like `gpt-4o` or `gpt-4o-mini` and control temperature and token usage.
+- **Page Watcher**: Sends the page content and URL to AI for better contextual responses.
+- **Configurable AI Models**: Choose different models and control temperature and token usage.
 - **Custom System Message**: Define how the AI should behave using a system instruction.
 - **Full Screen Mode**: The more space the better.
 - **Dark Mode Support**: Specially tailored to night owls.
@@ -73,6 +74,96 @@ Optionally, you can publish translations:
 php artisan vendor:publish --tag="ai-chat-agent-translations"
 ```
 
+## AI Providers
+
+This package supports multiple AI providers, allowing you to choose the best option for your needs:
+
+### Supported Providers
+
+1. **Azure OpenAI** - Microsoft's Azure OpenAI Service
+2. **Ollama** - Local AI models (Llama, Mistral, etc.)
+3. **LM Studio** - Local AI model management
+4. **Custom Endpoint** - Any OpenAI-compatible API
+
+### Provider Configuration
+
+Each provider can be configured using environment variables or through the plugin configuration:
+
+#### ChatGPT (OpenAI) - Default
+```env
+FILAMENT_AI_CHAT_PROVIDER=chatgpt
+OPENAI_API_KEY=your-openai-api-key
+OPENAI_ORGANIZATION=your-organization-id
+OPENAI_BASE_URL=https://api.openai.com/v1
+```
+
+#### Azure OpenAI
+```env
+FILAMENT_AI_CHAT_PROVIDER=azure-openai
+AZURE_OPENAI_API_KEY=your-azure-openai-api-key
+AZURE_OPENAI_ENDPOINT=https://your-resource.openai.azure.com/
+AZURE_OPENAI_DEPLOYMENT_NAME=your-deployment-name
+AZURE_OPENAI_API_VERSION=2024-02-15-preview
+```
+
+#### Ollama
+```env
+FILAMENT_AI_CHAT_PROVIDER=ollama
+OLLAMA_BASE_URL=http://localhost:11434
+OLLAMA_API_KEY=optional-api-key
+```
+
+#### LM Studio
+```env
+FILAMENT_AI_CHAT_PROVIDER=lmstudio
+LMSTUDIO_BASE_URL=http://localhost:1234
+LMSTUDIO_API_KEY=optional-api-key
+```
+
+#### Custom Endpoint
+```env
+FILAMENT_AI_CHAT_PROVIDER=custom-endpoint
+CUSTOM_AI_ENDPOINT_URL=https://your-custom-endpoint.com/v1/chat/completions
+CUSTOM_AI_API_KEY=your-api-key
+```
+
+### Quick Setup Examples
+
+#### Using Environment Variables (Recommended)
+```php
+// In your Filament panel configuration
+ChatgptAgentPlugin::make()
+    ->provider(env('FILAMENT_AI_CHAT_PROVIDER', 'chatgpt'))
+    ->providerConfig(ProviderConfigHelper::getActiveProviderConfig())
+```
+
+#### Direct Configuration
+```php
+// ChatGPT (Default)
+ChatgptAgentPlugin::make()
+    ->provider('chatgpt')
+    ->providerConfig([
+        'api_key' => env('OPENAI_API_KEY'),
+        'organization' => env('OPENAI_ORGANIZATION'),
+    ])
+
+// Azure OpenAI
+ChatgptAgentPlugin::make()
+    ->provider('azure-openai')
+    ->providerConfig([
+        'api_key' => 'your-api-key',
+        'endpoint' => 'https://your-resource.openai.azure.com/',
+        'deployment_name' => 'your-deployment',
+    ])
+
+// Ollama (Local)
+ChatgptAgentPlugin::make()
+    ->provider('ollama')
+    ->providerConfig([
+        'base_url' => 'http://localhost:11434',
+    ])
+```
+
 ## Usage
 
 ### 1. Adding the Plugin to Filament Panel
@@ -111,19 +202,25 @@ use EdrisaTuray\FilamentAiChatAgent\ChatgptAgentPlugin;
             ->plugin(
                 ChatgptAgentPlugin::make()
                     ->defaultPanelWidth('400px') // default 350px
-                    ->botName('GPT Assistant')
+                    ->botName('AI Assistant')
+                    ->provider('chatgpt') // Choose your AI provider
                     ->model('gpt-4o')
-                    ->buttonText('Ask ChatGPT')
+                    ->buttonText('Ask AI')
                     ->buttonIcon('heroicon-m-sparkles')
-                    // System instructions for the GPT
+                    // System instructions for the AI
                     ->systemMessage('Act nice and help') 
-                    // Array of GPTFunctions the GPT can use
+                    // Array of GPTFunctions the AI can use
                     ->functions([ 
                         new YourCustomGPTFunction(),
                     ])
                     // Default start message, set to false to not show a message
                     ->startMessage('Hello sir! How can I help you today?') 
                     ->pageWatcherEnabled(true)
+                    // Provider-specific configuration
+                    ->providerConfig([
+                        'api_key' => env('OPENAI_API_KEY'),
+                        'organization' => env('OPENAI_ORGANIZATION'),
+                    ])
 
             )
             ...
@@ -176,7 +273,9 @@ You can embed the ChatGPT agent in any Blade file:
 | `pageWatcherSelector()` | `string,Closure` | `'.fi-page'` | Sets the CSS selector for the page watcher. |
 | `pageWatcherMessage()` | `string,Closure,null` | `null` | Message displayed when the page changes. |
 | `startMessage()` | `string,bool,Closure` | `false` | Default message on panel open. Set to `false` to disable. |
-| `logoUrl()` | `string,bool,Closure` | `false` | Overwrite the chat avatar / logo. Set to `false` to show a default GPT icon. |
+| `logoUrl()` | `string,bool,Closure` | `false` | Overwrite the chat avatar / logo. Set to `false` to show a default AI provider icon. |
+| `provider()` | `string,Closure` | `'chatgpt'` | Sets the AI provider (chatgpt, azure-openai, ollama, lmstudio, custom-endpoint). |
+| `providerConfig()` | `array,Closure` | `[]` | Provider-specific configuration. |
 
 ## Using Laravel GPT Functions
 
