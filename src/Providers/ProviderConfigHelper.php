@@ -48,7 +48,7 @@ class ProviderConfigHelper
     {
         return match ($provider) {
             'chatgpt' => self::getChatGPTConfig(),
-            'azure-openai' => self::getAzureOpenAIConfig(),
+            'azure' => self::getAzureOpenAIConfig(),
             'ollama' => self::getOllamaConfig(),
             'lmstudio' => self::getLMStudioConfig(),
             'custom-endpoint' => self::getCustomEndpointConfig(),

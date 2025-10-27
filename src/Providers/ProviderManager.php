@@ -22,7 +22,7 @@ class ProviderManager
     {
         $this->providers = [
             'chatgpt' => ChatGPTProvider::class,
-            'azure-openai' => AzureOpenAIProvider::class,
+            'azure' => AzureOpenAIProvider::class,
             'ollama' => OllamaProvider::class,
             'lmstudio' => LMStudioProvider::class,
             'custom-endpoint' => CustomEndpointProvider::class,

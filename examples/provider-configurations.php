@@ -17,8 +17,8 @@ return [
         ->startMessage('Hello! I\'m your ChatGPT assistant. How can I help you today?'),
 
     // Azure OpenAI Configuration
-    'azure-openai' => AIChatAgentPlugin::make()
-        ->provider('azure-openai')
+    'azure' => AIChatAgentPlugin::make()
+        ->provider('azure')
         ->botName('Azure AI Assistant')
         ->model('gpt-4o')
         ->providerConfig(ProviderConfigHelper::getAzureOpenAIConfig())

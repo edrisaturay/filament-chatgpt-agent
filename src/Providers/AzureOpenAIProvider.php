@@ -9,7 +9,7 @@ class AzureOpenAIProvider extends BaseAiProvider
 {
     public function getId(): string
     {
-        return 'azure-openai';
+        return 'azure';
     }
 
     public function getName(): string

@@ -99,7 +99,7 @@ OPENAI_BASE_URL=https://api.openai.com/v1
 
 #### Azure OpenAI
 ```env
-FILAMENT_AI_CHAT_PROVIDER=azure-openai
+FILAMENT_AI_CHAT_PROVIDER=azure
 AZURE_OPENAI_API_KEY=your-azure-openai-api-key
 AZURE_OPENAI_ENDPOINT=https://your-resource.openai.azure.com/
 AZURE_OPENAI_DEPLOYMENT_NAME=your-deployment-name
@@ -149,7 +149,7 @@ AIChatAgentPlugin::make()
 
 // Azure OpenAI
 AIChatAgentPlugin::make()
-    ->provider('azure-openai')
+    ->provider('azure')
     ->providerConfig([
         'api_key' => 'your-api-key',
         'endpoint' => 'https://your-resource.openai.azure.com/',
@@ -274,7 +274,7 @@ You can embed the ChatGPT agent in any Blade file:
 | `pageWatcherMessage()` | `string,Closure,null` | `null` | Message displayed when the page changes. |
 | `startMessage()` | `string,bool,Closure` | `false` | Default message on panel open. Set to `false` to disable. |
 | `logoUrl()` | `string,bool,Closure` | `false` | Overwrite the chat avatar / logo. Set to `false` to show a default AI provider icon. |
-| `provider()` | `string,Closure` | `'chatgpt'` | Sets the AI provider (chatgpt, azure-openai, ollama, lmstudio, custom-endpoint). |
+| `provider()` | `string,Closure` | `'chatgpt'` | Sets the AI provider (chatgpt, azure, ollama, lmstudio, custom-endpoint). |
 | `providerConfig()` | `array,Closure` | `[]` | Provider-specific configuration. |
 
 ## Using Laravel GPT Functions
