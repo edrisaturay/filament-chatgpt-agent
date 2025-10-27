@@ -7,11 +7,21 @@ use Illuminate\Support\Facades\Log;
 
 class ChatGPTProvider extends BaseAiProvider
 {
+    /**
+     * Get the unique identifier for this provider.
+     * 
+     * @return string
+     */
     public function getId(): string
     {
         return 'chatgpt';
     }
 
+    /**
+     * Get the display name for this provider.
+     * 
+     * @return string
+     */
     public function getName(): string
     {
         return 'ChatGPT (OpenAI)';

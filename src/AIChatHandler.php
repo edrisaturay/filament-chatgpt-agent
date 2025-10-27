@@ -7,12 +7,44 @@ use MalteKuhr\LaravelGPT\GPTChat;
 use MalteKuhr\LaravelGPT\Models\ChatMessage;
 use EdrisaTuray\FilamentAiChatAgent\Providers\ProviderManager;
 
-class ChatgptChat extends GPTChat
+/**
+ * AI Chat Handler
+ * 
+ * This class handles communication with various AI providers for chat functionality.
+ * It extends Laravel GPT's GPTChat class and routes requests to the appropriate provider.
+ * 
+ * @package EdrisaTuray\FilamentAiChatAgent
+ * @author Edrisa A Turay <edrisa@edrisa.com>
+ * @since 1.0.0
+ */
+class AIChatHandler extends GPTChat
 {
+    /**
+     * Provider manager instance for handling different AI providers.
+     * 
+     * @var ProviderManager
+     */
     protected ProviderManager $providerManager;
+    
+    /**
+     * The currently selected AI provider ID.
+     * 
+     * @var string
+     */
     protected string $provider;
+    
+    /**
+     * Configuration array for the current provider.
+     * 
+     * @var array
+     */
     protected array $providerConfig;
 
+    /**
+     * Initialize the AI chat handler with provider configuration.
+     * 
+     * @return void
+     */
     public function __construct()
     {
         $this->providerManager = app(ProviderManager::class);

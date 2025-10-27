@@ -7,6 +7,16 @@ use Filament\Panel;
 use Closure;
 use EdrisaTuray\FilamentAiChatAgent\Providers\ProviderManager;
 
+/**
+ * AI Chat Agent Plugin for Filament
+ * 
+ * This plugin provides a multi-provider AI chat interface for Filament applications.
+ * It supports various AI providers including ChatGPT, Azure OpenAI, Ollama, LM Studio, and custom endpoints.
+ * 
+ * @package EdrisaTuray\FilamentAiChatAgent
+ * @author Edrisa A Turay <edrisa@edrisa.com>
+ * @since 1.0.0
+ */
 class AIChatAgentPlugin implements Plugin
 {
     protected bool|Closure|null $enabled = null;
@@ -28,16 +38,32 @@ class AIChatAgentPlugin implements Plugin
     protected string|Closure $provider = 'chatgpt';
     protected array|Closure $providerConfig = [];
 
+    /**
+     * Create a new instance of the plugin.
+     * 
+     * @return static
+     */
     public static function make(): static
     {
         return app(static::class);
     }
 
+    /**
+     * Get the unique identifier for this plugin.
+     * 
+     * @return string
+     */
     public function getId(): string
     {
         return 'ai-chat-agent';
     }
 
+    /**
+     * Register the plugin with the Filament panel.
+     * 
+     * @param Panel $panel
+     * @return void
+     */
     public function register(Panel $panel): void
     {
         $panel
@@ -52,6 +78,12 @@ class AIChatAgentPlugin implements Plugin
         //
     }
 
+    /**
+     * Set the AI provider to use for chat functionality.
+     * 
+     * @param string|Closure $provider The provider ID (chatgpt, azure, ollama, lmstudio, custom-endpoint)
+     * @return static
+     */
     public function provider(string|Closure $provider): static
     {
         $this->provider = $provider;

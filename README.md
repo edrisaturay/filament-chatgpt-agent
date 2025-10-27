@@ -279,7 +279,7 @@ You can embed the ChatGPT agent in any Blade file:
 
 ## Using Laravel GPT Functions
 
-Laravel GPT allows you to define custom **GPTFunctions** that ChatGPT can call to execute tasks within your application. This is useful for integrating dynamic data retrieval, calculations, or external API calls into the ChatGPT responses.
+Laravel GPT allows you to define custom **GPTFunctions** that AI can call to execute tasks within your application. This is useful for integrating dynamic data retrieval, calculations, or external API calls into the AI responses.
 
 Refer to the [Laravel GPT documentation](https://github.com/maltekuhr/laravel-gpt) for more details.
 
@@ -287,11 +287,11 @@ Refer to the [Laravel GPT documentation](https://github.com/maltekuhr/laravel-gp
 
 ![](https://raw.githubusercontent.com/EdrisaTuray/filament-ai-chat-agent/main/screenshots/page-watcher.png)
 
-The **Page Watcher** feature allows the ChatGPT agent to receive additional context about the current page by including the `.innerText` of a specified page element (default: `.fi-page`, the Filament page container) along with the page URL in each message sent to ChatGPT. This helps provide better contextual responses based on the page content.
+The **Page Watcher** feature allows the AI agent to receive additional context about the current page by including the `.innerText` of a specified page element (default: `.fi-page`, the Filament page container) along with the page URL in each message sent to AI. This helps provide better contextual responses based on the page content.
 
 ### Privacy Considerations
 
-**Use this feature with caution.** Since the entire page content (or the selected element's content) is sent to ChatGPT, users should be informed of this behavior. The `pageWatcherEnabled` option supports a closure, allowing you to provide an opt-in mechanism for users.
+**Use this feature with caution.** Since the entire page content (or the selected element's content) is sent to AI, users should be informed of this behavior. The `pageWatcherEnabled` option supports a closure, allowing you to provide an opt-in mechanism for users.
 
 ### Enabling Page Watcher
 
@@ -307,7 +307,7 @@ public function panel(Panel $panel): Panel
                 ->pageWatcherSelector('.custom-content') // Specify the selector
                 ->pageWatcherMessage(
                     "This is the plain text the user can see on the page, use it as additional context for the previous message:\n\n"
-                ) // Optional custom message for ChatGPT
+                ) // Optional custom message for AI
         );
 }
 ```

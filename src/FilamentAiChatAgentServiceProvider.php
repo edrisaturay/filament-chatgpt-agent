@@ -8,8 +8,24 @@ use Livewire\Livewire;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
+/**
+ * Filament AI Chat Agent Service Provider
+ * 
+ * This service provider registers the AI chat agent plugin with Filament,
+ * including views, assets, Livewire components, and provider management.
+ * 
+ * @package EdrisaTuray\FilamentAiChatAgent
+ * @author Edrisa A Turay <edrisa@edrisa.com>
+ * @since 1.0.0
+ */
 class FilamentAiChatAgentServiceProvider extends PackageServiceProvider
 {
+    /**
+     * Configure the package for registration.
+     * 
+     * @param Package $package
+     * @return void
+     */
     public function configurePackage(Package $package): void
     {
         /*
@@ -24,7 +40,9 @@ class FilamentAiChatAgentServiceProvider extends PackageServiceProvider
     }
 
     /**
-     * Bootstrap any application services.
+     * Bootstrap any application services after package registration.
+     * 
+     * @return void
      */
     public function packageBooted(): void
     {
@@ -32,7 +50,9 @@ class FilamentAiChatAgentServiceProvider extends PackageServiceProvider
     }
 
     /**
-     * Register any application services.
+     * Register any application services after package registration.
+     * 
+     * @return void
      */
     public function packageRegistered(): void
     {

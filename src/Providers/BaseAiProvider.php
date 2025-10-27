@@ -2,13 +2,58 @@
 
 namespace EdrisaTuray\FilamentAiChatAgent\Providers;
 
+/**
+ * Base AI Provider
+ * 
+ * Abstract base class that provides common functionality for all AI providers.
+ * Implements shared logic for model configuration, temperature, tokens, and system messages.
+ * 
+ * @package EdrisaTuray\FilamentAiChatAgent\Providers
+ * @author Edrisa A Turay <edrisa@edrisa.com>
+ * @since 1.0.0
+ */
 abstract class BaseAiProvider implements AiProviderInterface
 {
+    /**
+     * Provider configuration array.
+     * 
+     * @var array
+     */
     protected array $config = [];
+    
+    /**
+     * The AI model to use for requests.
+     * 
+     * @var string
+     */
     protected string $model = '';
+    
+    /**
+     * Temperature setting for response randomness (0.0 to 1.0).
+     * 
+     * @var float
+     */
     protected float $temperature = 0.7;
+    
+    /**
+     * Maximum number of tokens to generate.
+     * 
+     * @var int|null
+     */
     protected ?int $maxTokens = null;
+    
+    /**
+     * System message to set the AI's behavior.
+     * 
+     * @var string
+     */
     protected string $systemMessage = '';
+    
+    /**
+     * Array of function definitions for function calling.
+     * 
+     * @var array
+     */
     protected array $functions = [];
 
     public function __construct(array $config = [])

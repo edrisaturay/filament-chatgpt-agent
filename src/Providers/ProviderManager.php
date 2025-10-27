@@ -10,9 +10,25 @@ use EdrisaTuray\FilamentAiChatAgent\Providers\CustomEndpointProvider;
 
 class ProviderManager
 {
+    /**
+     * Array of registered AI providers.
+     * 
+     * @var array<string, AiProviderInterface>
+     */
     protected array $providers = [];
+    
+    /**
+     * The default provider ID.
+     * 
+     * @var string
+     */
     protected string $defaultProvider = 'chatgpt';
 
+    /**
+     * Initialize the provider manager and register default providers.
+     * 
+     * @return void
+     */
     public function __construct()
     {
         $this->registerDefaultProviders();

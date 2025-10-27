@@ -2,8 +2,23 @@
 
 namespace EdrisaTuray\FilamentAiChatAgent\Providers;
 
+/**
+ * Provider Configuration Helper
+ * 
+ * This helper class provides centralized configuration management for all AI providers.
+ * It reads environment variables and provides structured configuration arrays for each provider.
+ * 
+ * @package EdrisaTuray\FilamentAiChatAgent\Providers
+ * @author Edrisa A Turay <edrisa@edrisa.com>
+ * @since 1.0.0
+ */
 class ProviderConfigHelper
 {
+    /**
+     * Get configuration for Azure OpenAI provider.
+     * 
+     * @return array
+     */
     public static function getAzureOpenAIConfig(): array
     {
         return [
@@ -14,6 +29,11 @@ class ProviderConfigHelper
         ];
     }
 
+    /**
+     * Get configuration for Ollama provider.
+     * 
+     * @return array
+     */
     public static function getOllamaConfig(): array
     {
         return [
