@@ -50,6 +50,8 @@ class AIChatAgentPlugin implements Plugin
         
         $maxTokens = env('FILAMENT_AI_CHAT_MAX_TOKENS');
         $this->maxTokens = $maxTokens !== null ? (int) $maxTokens : null;
+        
+        $this->provider = env('FILAMENT_AI_CHAT_PROVIDER', 'chatgpt');
     }
 
     /**
