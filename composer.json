@@ -1,7 +1,7 @@
 {
     "name": "edrisaturay/filament-ai-chat-agent",
-    "description": "Integrate with OpenAI ChatGPT",
-    "version": "1.0.3",
+    "description": "A Filament plugin that allows you to easily integrate AI chat capabilities into your Filament project",
+    "version": "1.0.0",
     "keywords": [
         "likeabas",
         "edrisaturay",
@@ -10,6 +10,19 @@
     ],
     "homepage": "https://github.com/edrisaturay/filament-ai-chat-agent",
     "license": "MIT",
+    "authors": [
+        {
+            "name": "Edrisa A Turay",
+            "email": "edrisa.turay@gmail.com",
+            "homepage": "https://github.com/edrisaturay",
+            "role": "Maintainer"
+        },
+        {
+            "name": "Bas Schleijpen",
+            "homepage": "https://github.com/likeabas",
+            "role": "Original Creator"
+        }
+    ],
     "require": {
         "php": ">=8.0",
         "spatie/laravel-package-tools": "^1.9.2",

@@ -1,6 +1,9 @@
-# ChatGPT Agent for Laravel Filament
+# AI Chat Agent for Laravel Filament
 
-Filament ChatGPT Agent is a Filament plugin that allows you to easily integrate ChatGPT into your Filament project, enabling ChatGPT to access context information from your project by creating GPT functions.
+A Filament plugin that allows you to easily integrate AI chat capabilities into your Filament project, enabling AI to access context information from your project by creating GPT functions.
+
+**Author:** [Edrisa A Turay](https://github.com/edrisaturay)  
+**Original Package:** Forked from [filament-chatgpt-agent](https://github.com/likeabas/filament-chatgpt-agent) by [Bas Schleijpen](https://github.com/likeabas)
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/EdrisaTuray/filament-ai-chat-agent.svg?style=flat-square)](https://packagist.org/packages/EdrisaTuray/filament-ai-chat-agent)
 [![Total Downloads](https://img.shields.io/packagist/dt/EdrisaTuray/filament-ai-chat-agent.svg?style=flat-square)](https://packagist.org/packages/EdrisaTuray/filament-ai-chat-agent)
@@ -224,6 +227,39 @@ public function panel(Panel $panel): Panel
 }
 ```
 
+## Versioning
+
+This package follows [Semantic Versioning](https://semver.org/) (SemVer).
+
+### Automatic Version Bumping
+
+The package includes automated version bumping via GitHub Actions. Every time you push changes to the `main` branch that modify `composer.json`, the version will be automatically incremented:
+
+- **Patch releases** (1.0.0 → 1.0.1): Bug fixes and minor improvements
+- **Minor releases** (1.0.0 → 1.1.0): New features (backward compatible)
+- **Major releases** (1.0.0 → 2.0.0): Breaking changes
+
+### Manual Version Bumping
+
+You can also manually bump the version using the included script:
+
+```bash
+# Patch version bump (default)
+php bump-version.php
+
+# Minor version bump
+php bump-version.php minor
+
+# Major version bump
+php bump-version.php major
+```
+
+This will:
+1. Update the version in `composer.json`
+2. Commit the changes
+3. Create a git tag
+4. Prepare for pushing
+
 ## Changelog
 
 Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
@@ -234,7 +270,14 @@ Please review [our security policy](../../security/policy) on how to report secu
 
 ## Credits
 
-- Package created by [Bas Schleijpen](https://github.com/likeabas).
-- Package edited by [Edrisa A Turay](https://github.com/edrisaturay)
-- The view and livewire component structure was inspired by [Martin Hwang](https://github.com/icetalker).
+This package is a fork and continuation of the original work by:
+
+- **Original Creator:** [Bas Schleijpen](https://github.com/likeabas) - Created the initial `filament-chatgpt-agent` package
+- **Current Maintainer:** [Edrisa A Turay](https://github.com/edrisaturay) - Forked, renamed, and maintains this version
+- **Inspiration:** The view and Livewire component structure was inspired by [Martin Hwang](https://github.com/icetalker)
+
+### Original Package
+This package was forked from [likeabas/filament-chatgpt-agent](https://github.com/likeabas/filament-chatgpt-agent) and renamed to `filament-ai-chat-agent` for broader AI model support and continued development.
+
+### Contributors
 - [All Contributors](../../contributors)

@@ -1,0 +1,116 @@
+name: Release
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'composer.json'
+  workflow_dispatch:
+    inputs:
+      version_type:
+        description: 'Version bump type'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+        - patch
+        - minor
+        - major
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        fetch-depth: 0
+    
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.1'
+        extensions: mbstring, dom, fileinfo, mysql, sqlite, pgsql, zip, bcmath, soap, intl, gd, exif, iconv
+        coverage: none
+    
+    - name: Get current version
+      id: current_version
+      run: |
+        VERSION=$(php -r "echo json_decode(file_get_contents('composer.json'), true)['version'];")
+        echo "current_version=$VERSION" >> $GITHUB_OUTPUT
+        echo "Current version: $VERSION"
+    
+    - name: Bump version
+      id: bump_version
+      run: |
+        VERSION_TYPE="${{ github.event.inputs.version_type || 'patch' }}"
+        CURRENT_VERSION="${{ steps.current_version.outputs.current_version }}"
+        
+        # Parse current version
+        IFS='.' read -ra VERSION_PARTS <<< "$CURRENT_VERSION"
+        MAJOR=${VERSION_PARTS[0]}
+        MINOR=${VERSION_PARTS[1]}
+        PATCH=${VERSION_PARTS[2]}
+        
+        # Bump version
+        case $VERSION_TYPE in
+          major)
+            MAJOR=$((MAJOR + 1))
+            MINOR=0
+            PATCH=0
+            ;;
+          minor)
+            MINOR=$((MINOR + 1))
+            PATCH=0
+            ;;
+          patch)
+            PATCH=$((PATCH + 1))
+            ;;
+        esac
+        
+        NEW_VERSION="$MAJOR.$MINOR.$PATCH"
+        echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
+        echo "New version: $NEW_VERSION"
+        
+        # Update composer.json
+        php -r "
+          \$composer = json_decode(file_get_contents('composer.json'), true);
+          \$composer['version'] = '$NEW_VERSION';
+          file_put_contents('composer.json', json_encode(\$composer, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+        "
+    
+    - name: Commit version bump
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add composer.json
+        git commit -m "Bump version to ${{ steps.bump_version.outputs.new_version }}" || exit 0
+    
+    - name: Create and push tag
+      run: |
+        TAG="v${{ steps.bump_version.outputs.new_version }}"
+        git tag $TAG
+        git push origin main
+        git push origin $TAG
+    
+    - name: Create Release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: v${{ steps.bump_version.outputs.new_version }}
+        release_name: Release v${{ steps.bump_version.outputs.new_version }}
+        body: |
+          ## Changes in v${{ steps.bump_version.outputs.new_version }}
+          
+          - Version bump to ${{ steps.bump_version.outputs.new_version }}
+          
+          ## Installation
+          
+          ```bash
+          composer require edrisaturay/filament-ai-chat-agent:${{ steps.bump_version.outputs.new_version }}
+          ```
+        draft: false
+        prerelease: false
