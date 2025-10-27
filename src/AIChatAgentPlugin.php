@@ -43,15 +43,19 @@ class AIChatAgentPlugin implements Plugin
      */
     public function __construct()
     {
-        $this->model = env('FILAMENT_AI_CHAT_MODEL', 'gpt-4o-mini');
+        // Read from config file first, fallback to environment variables
+        $this->model = config('ai-chat-agent.model.default', env('FILAMENT_AI_CHAT_MODEL', 'gpt-4o-mini'));
         
-        $temperature = env('FILAMENT_AI_CHAT_TEMPERATURE');
+        $temperature = config('ai-chat-agent.model.temperature', env('FILAMENT_AI_CHAT_TEMPERATURE'));
         $this->temperature = $temperature !== null ? (float) $temperature : 0.7;
         
-        $maxTokens = env('FILAMENT_AI_CHAT_MAX_TOKENS');
+        $maxTokens = config('ai-chat-agent.model.max_tokens', env('FILAMENT_AI_CHAT_MAX_TOKENS'));
         $this->maxTokens = $maxTokens !== null ? (int) $maxTokens : null;
         
-        $this->provider = env('FILAMENT_AI_CHAT_PROVIDER', 'chatgpt');
+        $this->provider = config('ai-chat-agent.default_provider', env('FILAMENT_AI_CHAT_PROVIDER', 'chatgpt'));
+        
+        // Set provider config from config file
+        $this->providerConfig = config('ai-chat-agent.providers.' . $this->provider, []);
     }
 
     /**
@@ -165,7 +169,7 @@ class AIChatAgentPlugin implements Plugin
             return ($this->botName)();
         }
 
-        return $this->botName ?? __('ai-chat-agent::translations.bot_name');
+        return $this->botName ?? config('ai-chat-agent.ui.bot_name', __('ai-chat-agent::translations.bot_name'));
     }
 
     public function buttonText(string|Closure $text): static
@@ -181,7 +185,7 @@ class AIChatAgentPlugin implements Plugin
             return ($this->buttonText)();
         }
 
-        return $this->buttonText ?? __('ai-chat-agent::translations.button_text');
+        return $this->buttonText ?? config('ai-chat-agent.ui.button_text', __('ai-chat-agent::translations.button_text'));
     }
 
     public function buttonIcon(string|Closure $icon): static
@@ -213,7 +217,7 @@ class AIChatAgentPlugin implements Plugin
             return ($this->sendingText)();
         }
 
-        return $this->sendingText ??__('ai-chat-agent::translations.sending_text');
+        return $this->sendingText ?? config('ai-chat-agent.ui.sending_text', __('ai-chat-agent::translations.sending_text'));
     }
 
     public function model(string|Closure $model): static
@@ -277,7 +281,7 @@ class AIChatAgentPlugin implements Plugin
             return ($this->systemMessage)();
         }
 
-        return $this->systemMessage;
+        return $this->systemMessage ?? config('ai-chat-agent.system_message', '');
     }
 
     public function functions(array|Closure $functions): static
@@ -373,7 +377,7 @@ class AIChatAgentPlugin implements Plugin
             return ($this->startMessage)();
         }
 
-        return $this->startMessage;
+        return $this->startMessage ?? config('ai-chat-agent.ui.start_message', false);
     }
 
     public function logoUrl(string|bool|Closure $url): static
@@ -389,6 +393,6 @@ class AIChatAgentPlugin implements Plugin
             return ($this->logoUrl)();
         }
 
-        return $this->logoUrl;
+        return $this->logoUrl ?? config('ai-chat-agent.ui.logo_url', false);
     }
 }

@@ -82,6 +82,43 @@ This will create a `config/ai-chat-agent.php` file where you can customize:
 - Page watcher settings
 - System messages and functions
 
+### Configuration Priority
+
+The plugin uses the following priority order for configuration:
+
+1. **Method calls** (highest priority) - `->provider('azure')`
+2. **Config file** - `config/ai-chat-agent.php`
+3. **Environment variables** - `.env` file
+4. **Default values** (lowest priority)
+
+### Example Configuration
+
+After publishing the config file, you can customize it:
+
+```php
+// config/ai-chat-agent.php
+return [
+    'default_provider' => 'azure',
+    'model' => [
+        'default' => 'gpt-4o',
+        'temperature' => 0.8,
+        'max_tokens' => 3000,
+    ],
+    'ui' => [
+        'bot_name' => 'Azure AI Assistant',
+        'button_text' => 'Ask Azure AI',
+        'start_message' => 'Hello! I\'m your Azure AI assistant.',
+    ],
+    'providers' => [
+        'azure' => [
+            'api_key' => env('AZURE_OPENAI_API_KEY'),
+            'endpoint' => env('AZURE_OPENAI_ENDPOINT'),
+            'deployment_name' => env('AZURE_OPENAI_DEPLOYMENT_NAME'),
+        ],
+    ],
+];
+```
+
 ## Translations
 
 Optionally, you can publish translations:
