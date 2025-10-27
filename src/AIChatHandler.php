@@ -115,7 +115,7 @@ class AIChatHandler extends GPTChat
         return $this;
     }
 
-    public function send(): MalteKuhr\LaravelGPT\GPTChat
+    public function send(): GPTChat
     {
         try {
             $aiProvider = $this->providerManager->getProvider($this->provider, $this->providerConfig);
