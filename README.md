@@ -2,18 +2,18 @@
 
 Filament ChatGPT Agent is a Filament plugin that allows you to easily integrate ChatGPT into your Filament project, enabling ChatGPT to access context information from your project by creating GPT functions.
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/likeabas/filament-chatgpt-agent.svg?style=flat-square)](https://packagist.org/packages/likeabas/filament-chatgpt-agent)
-[![Total Downloads](https://img.shields.io/packagist/dt/likeabas/filament-chatgpt-agent.svg?style=flat-square)](https://packagist.org/packages/likeabas/filament-chatgpt-agent)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/EdrisaTuray/filament-chatgpt-agent.svg?style=flat-square)](https://packagist.org/packages/EdrisaTuray/filament-chatgpt-agent)
+[![Total Downloads](https://img.shields.io/packagist/dt/EdrisaTuray/filament-chatgpt-agent.svg?style=flat-square)](https://packagist.org/packages/EdrisaTuray/filament-chatgpt-agent)
 
 ## Preview:
 Dark Mode:
-![](https://raw.githubusercontent.com/likeabas/filament-chatgpt-agent/main/screenshots/darkmode.png)
+![](https://raw.githubusercontent.com/EdrisaTuray/filament-chatgpt-agent/main/screenshots/darkmode.png)
 Select a text to quickly insert it:
-![](https://raw.githubusercontent.com/likeabas/filament-chatgpt-agent/main/screenshots/select-to-insert.png)
+![](https://raw.githubusercontent.com/EdrisaTuray/filament-chatgpt-agent/main/screenshots/select-to-insert.png)
 Light Mode:
-![](https://raw.githubusercontent.com/likeabas/filament-chatgpt-agent/main/screenshots/lightmode.png)
+![](https://raw.githubusercontent.com/EdrisaTuray/filament-chatgpt-agent/main/screenshots/lightmode.png)
 ChatGPT can read the page content for extra context:
-![](https://raw.githubusercontent.com/likeabas/filament-chatgpt-agent/main/screenshots/page-watcher.png)
+![](https://raw.githubusercontent.com/EdrisaTuray/filament-chatgpt-agent/main/screenshots/page-watcher.png)
 
 ## Features
 
@@ -51,7 +51,7 @@ OPENAI_API_KEY=YOUR_API_KEY
 Now install this package:
 
 ```bash
-composer require likeabas/filament-chatgpt-agent
+composer require edrisaturay/filament-chatgpt-agent
 ```
 
 ## Views
@@ -78,7 +78,7 @@ Modify your Filament [Panel Configuration](https://laravel-filament.cn/docs/en/3
 
 
 ```php
-use LikeABas\FilamentChatgptAgent\ChatgptAgentPlugin;
+use EdrisaTuray\FilamentChatgptAgent\ChatgptAgentPlugin;
 
     public function panel(Panel $panel): Panel
     {
@@ -97,7 +97,7 @@ Also see [all available options](#available-options) below.
 
 ```php
 use App\GPT\Functions\YourCustomGPTFunction;
-use LikeABas\FilamentChatgptAgent\ChatgptAgentPlugin;
+use EdrisaTuray\FilamentChatgptAgent\ChatgptAgentPlugin;
 
 ...
 
@@ -183,7 +183,7 @@ Refer to the [Laravel GPT documentation](https://github.com/maltekuhr/laravel-gp
 
 ## Page Watcher
 
-![](https://raw.githubusercontent.com/likeabas/filament-chatgpt-agent/main/screenshots/page-watcher.png)
+![](https://raw.githubusercontent.com/EdrisaTuray/filament-chatgpt-agent/main/screenshots/page-watcher.png)
 
 The **Page Watcher** feature allows the ChatGPT agent to receive additional context about the current page by including the `.innerText` of a specified page element (default: `.fi-page`, the Filament page container) along with the page URL in each message sent to ChatGPT. This helps provide better contextual responses based on the page content.
 
@@ -235,5 +235,6 @@ Please review [our security policy](../../security/policy) on how to report secu
 ## Credits
 
 - Package created by [Bas Schleijpen](https://github.com/likeabas).
+- Package edited by [Edrisa A Turay](https://github.com/edrisaturay)
 - The view and livewire component structure was inspired by [Martin Hwang](https://github.com/icetalker).
 - [All Contributors](../../contributors)

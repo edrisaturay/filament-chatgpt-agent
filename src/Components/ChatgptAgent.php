@@ -1,8 +1,8 @@
 <?php
 
-namespace LikeABas\FilamentChatgptAgent\Components;
+namespace EdrisaTuray\FilamentChatgptAgent\Components;
 
-use LikeABas\FilamentChatgptAgent\ChatgptChat;
+use EdrisaTuray\FilamentChatgptAgent\ChatgptChat;
 use Livewire\Attributes\Session;
 use Livewire\Component;
 

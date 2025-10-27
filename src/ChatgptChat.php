@@ -1,6 +1,6 @@
 <?php
 
-namespace LikeABas\FilamentChatgptAgent;
+namespace EdrisaTuray\FilamentChatgptAgent;
 
 use MalteKuhr\LaravelGPT\Enums\ChatRole;
 use MalteKuhr\LaravelGPT\GPTChat;

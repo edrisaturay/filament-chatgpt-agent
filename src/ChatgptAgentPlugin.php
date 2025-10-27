@@ -1,6 +1,6 @@
 <?php
 
-namespace LikeABas\FilamentChatgptAgent;
+namespace EdrisaTuray\FilamentChatgptAgent;
 
 use Filament\Contracts\Plugin;
 use Filament\Panel;

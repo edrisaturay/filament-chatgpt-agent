@@ -1,8 +1,8 @@
 <?php
 
-namespace LikeABas\FilamentChatgptAgent;
+namespace EdrisaTuray\FilamentChatgptAgent;
 
-use LikeABas\FilamentChatgptAgent\Components\ChatgptAgent;
+use EdrisaTuray\FilamentChatgptAgent\Components\ChatgptAgent;
 use Livewire\Livewire;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
