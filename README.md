@@ -66,6 +66,22 @@ Optionally, you can publish the views:
 php artisan vendor:publish --tag="ai-chat-agent-views"
 ```
 
+## Configuration
+
+Optionally, you can publish the configuration file to customize all package settings:
+
+```bash
+php artisan vendor:publish --tag="ai-chat-agent-config"
+```
+
+This will create a `config/ai-chat-agent.php` file where you can customize:
+- Default AI provider
+- Model settings (temperature, max tokens, etc.)
+- Provider configurations
+- UI settings (bot name, button text, etc.)
+- Page watcher settings
+- System messages and functions
+
 ## Translations
 
 Optionally, you can publish translations:

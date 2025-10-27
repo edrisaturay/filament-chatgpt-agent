@@ -36,7 +36,8 @@ class FilamentAiChatAgentServiceProvider extends PackageServiceProvider
         $package
             ->name('ai-chat-agent')
             ->hasTranslations()
-            ->hasViews();
+            ->hasViews()
+            ->hasConfigFile();
     }
 
     /**
