@@ -115,7 +115,7 @@ class AIChatHandler extends GPTChat
         return $this;
     }
 
-    public function send(): void
+    public function send(): MalteKuhr\LaravelGPT\GPTChat
     {
         try {
             $aiProvider = $this->providerManager->getProvider($this->provider, $this->providerConfig);
@@ -158,5 +158,7 @@ class AIChatHandler extends GPTChat
                 content: 'Sorry, I encountered an error. Please try again.',
             );
         }
+
+        return $this;
     }
 }
