@@ -132,7 +132,7 @@ CUSTOM_AI_API_KEY=your-api-key
 #### Using Environment Variables (Recommended)
 ```php
 // In your Filament panel configuration
-ChatgptAgentPlugin::make()
+AIChatAgentPlugin::make()
     ->provider(env('FILAMENT_AI_CHAT_PROVIDER', 'chatgpt'))
     ->providerConfig(ProviderConfigHelper::getActiveProviderConfig())
 ```
@@ -140,7 +140,7 @@ ChatgptAgentPlugin::make()
 #### Direct Configuration
 ```php
 // ChatGPT (Default)
-ChatgptAgentPlugin::make()
+AIChatAgentPlugin::make()
     ->provider('chatgpt')
     ->providerConfig([
         'api_key' => env('OPENAI_API_KEY'),
@@ -148,7 +148,7 @@ ChatgptAgentPlugin::make()
     ])
 
 // Azure OpenAI
-ChatgptAgentPlugin::make()
+AIChatAgentPlugin::make()
     ->provider('azure-openai')
     ->providerConfig([
         'api_key' => 'your-api-key',
@@ -157,7 +157,7 @@ ChatgptAgentPlugin::make()
     ])
 
 // Ollama (Local)
-ChatgptAgentPlugin::make()
+AIChatAgentPlugin::make()
     ->provider('ollama')
     ->providerConfig([
         'base_url' => 'http://localhost:11434',
@@ -172,14 +172,14 @@ Modify your Filament [Panel Configuration](https://laravel-filament.cn/docs/en/3
 
 
 ```php
-use EdrisaTuray\FilamentAiChatAgent\ChatgptAgentPlugin;
+use EdrisaTuray\FilamentAiChatAgent\AIChatAgentPlugin;
 
     public function panel(Panel $panel): Panel
     {
         return $panel
             ...
             ->plugin(
-                ChatgptAgentPlugin::make()
+                AIChatAgentPlugin::make()
             )
             ...
     }
@@ -191,7 +191,7 @@ Also see [all available options](#available-options) below.
 
 ```php
 use App\GPT\Functions\YourCustomGPTFunction;
-use EdrisaTuray\FilamentAiChatAgent\ChatgptAgentPlugin;
+use EdrisaTuray\FilamentAiChatAgent\AIChatAgentPlugin;
 
 ...
 
@@ -200,7 +200,7 @@ use EdrisaTuray\FilamentAiChatAgent\ChatgptAgentPlugin;
         return $panel
             ...
             ->plugin(
-                ChatgptAgentPlugin::make()
+                AIChatAgentPlugin::make()
                     ->defaultPanelWidth('400px') // default 350px
                     ->botName('AI Assistant')
                     ->provider('chatgpt') // Choose your AI provider
@@ -302,7 +302,7 @@ public function panel(Panel $panel): Panel
 {
     return $panel
         ->plugin(
-            ChatgptAgentPlugin::make()
+            AIChatAgentPlugin::make()
                 ->pageWatcherEnabled(true) // Enable page watcher
                 ->pageWatcherSelector('.custom-content') // Specify the selector
                 ->pageWatcherMessage(
@@ -319,7 +319,7 @@ public function panel(Panel $panel): Panel
 {
     return $panel
         ->plugin(
-            ChatgptAgentPlugin::make()
+            AIChatAgentPlugin::make()
                 ->pageWatcherEnabled(fn () => auth()->user()->settings['enable_page_watcher'] ?? false) // User opt-in
                 ->pageWatcherSelector('.fi-page')
         );

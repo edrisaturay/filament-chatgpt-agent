@@ -7,7 +7,7 @@ use Filament\Panel;
 use Closure;
 use EdrisaTuray\FilamentAiChatAgent\Providers\ProviderManager;
 
-class ChatgptAgentPlugin implements Plugin
+class AIChatAgentPlugin implements Plugin
 {
     protected bool|Closure|null $enabled = null;
     protected string|Closure|null $botName = null;
