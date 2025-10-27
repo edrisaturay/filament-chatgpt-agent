@@ -123,7 +123,7 @@ abstract class BaseAiProvider implements AiProviderInterface
 
     public function getIcon(): string
     {
-         return "ai-chat-agent::components.{$this->getId()}-svg";
+         return "ai-chat-agent::components.{$this->getId()}.svg";
     }
 
     abstract public function getId(): string;
