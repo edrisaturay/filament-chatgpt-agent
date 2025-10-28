@@ -114,6 +114,19 @@ class AzureOpenAIProvider extends BaseAiProvider
             $payload['functions'] = $this->functions;
         }
 
+        // Debug: Log the request payload
+        Log::info('Azure OpenAI Request Payload', [
+            'provider' => 'azure',
+            'url' => $url,
+            'model' => $this->model,
+            'temperature' => $this->temperature,
+            'max_tokens' => $this->maxTokens,
+            'system_message' => $this->systemMessage,
+            'functions_count' => count($this->functions),
+            'messages_count' => count($payload['messages']),
+            'has_functions' => !empty($this->functions),
+        ]);
+
         try {
             $response = Http::withHeaders([
                 'api-key' => $apiKey,
@@ -124,17 +137,49 @@ class AzureOpenAIProvider extends BaseAiProvider
                 $data = $response->json();
                 $message = $data['choices'][0]['message'];
                 
+                // Debug: Log the complete Azure response
+                Log::info('Azure OpenAI Response', [
+                    'provider' => 'azure',
+                    'model' => $this->model,
+                    'message' => $message,
+                    'has_function_call' => isset($message['function_call']),
+                    'usage' => $data['usage'] ?? null,
+                ]);
+                
                 // Check if Azure wants to call a function
                 if (isset($message['function_call'])) {
                     $functionName = $message['function_call']['name'];
                     $functionArgs = json_decode($message['function_call']['arguments'], true);
                     
+                    // Debug: Log function call details
+                    Log::info('Azure Function Call Detected', [
+                        'provider' => 'azure',
+                        'function_name' => $functionName,
+                        'function_arguments' => $functionArgs,
+                        'raw_arguments' => $message['function_call']['arguments'],
+                    ]);
+                    
                     // Execute the LaravelGPT function
                     $functionResult = $this->executeFunction($functionName, $functionArgs);
+                    
+                    // Debug: Log function execution result
+                    Log::info('Function Execution Result', [
+                        'provider' => 'azure',
+                        'function_name' => $functionName,
+                        'result' => $functionResult,
+                        'result_type' => gettype($functionResult),
+                    ]);
                     
                     // Send function result back to Azure
                     return $this->sendFunctionResult($functionName, $functionResult, $messages);
                 }
+                
+                // Debug: Log normal response
+                Log::info('Azure Normal Response', [
+                    'provider' => 'azure',
+                    'content' => $message['content'] ?? '',
+                    'content_length' => strlen($message['content'] ?? ''),
+                ]);
                 
                 // Normal response
                 return [
@@ -177,24 +222,63 @@ class AzureOpenAIProvider extends BaseAiProvider
      */
     private function executeFunction(string $functionName, array $arguments): array
     {
+        // Debug: Log function execution start
+        Log::info('Function Execution Started', [
+            'provider' => 'azure',
+            'function_name' => $functionName,
+            'arguments' => $arguments,
+            'arguments_count' => count($arguments),
+        ]);
+        
         try {
             // Create a function instance based on the function name
             $function = $this->createFunctionInstance($functionName);
             
             if (!$function) {
+                Log::error('Function Instance Creation Failed', [
+                    'provider' => 'azure',
+                    'function_name' => $functionName,
+                    'reason' => 'Function not found in function map',
+                ]);
                 return ['error' => 'Function not found: ' . $functionName];
             }
             
+            // Debug: Log successful function instance creation
+            Log::info('Function Instance Created', [
+                'provider' => 'azure',
+                'function_name' => $functionName,
+                'function_class' => get_class($function),
+            ]);
+            
             // Use LaravelGPT FunctionManager to execute the function
             $functionManager = FunctionManager::make($function);
+            
+            // Debug: Log FunctionManager creation
+            Log::info('FunctionManager Created', [
+                'provider' => 'azure',
+                'function_name' => $functionName,
+                'function_manager_class' => get_class($functionManager),
+            ]);
+            
             $result = $functionManager->call($arguments);
+            
+            // Debug: Log function call result
+            Log::info('Function Call Completed', [
+                'provider' => 'azure',
+                'function_name' => $functionName,
+                'result_class' => get_class($result),
+                'result_content' => $result->content,
+                'result_type' => gettype($result->content),
+            ]);
             
             return $result->content;
         } catch (\Exception $e) {
             Log::error('Function execution error', [
+                'provider' => 'azure',
                 'function' => $functionName,
                 'arguments' => $arguments,
                 'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
             ]);
             
             return ['error' => $e->getMessage()];
@@ -209,6 +293,12 @@ class AzureOpenAIProvider extends BaseAiProvider
      */
     private function createFunctionInstance(string $functionName)
     {
+        // Debug: Log function instance creation attempt
+        Log::info('Creating Function Instance', [
+            'provider' => 'azure',
+            'function_name' => $functionName,
+        ]);
+        
         // Map function names to their corresponding LaravelGPT function classes
         $functionMap = [
             'application_case_query' => \MalteKuhr\LaravelGPT\Functions\ApplicationCaseQueryFunction::class,
@@ -217,22 +307,73 @@ class AzureOpenAIProvider extends BaseAiProvider
             'system_info' => \MalteKuhr\LaravelGPT\Functions\SystemInfoFunction::class,
         ];
         
+        // Debug: Log available functions
+        Log::info('Available Functions', [
+            'provider' => 'azure',
+            'function_map' => array_keys($functionMap),
+            'requested_function' => $functionName,
+            'function_exists' => isset($functionMap[$functionName]),
+        ]);
+        
         if (!isset($functionMap[$functionName])) {
+            Log::warning('Function Not Found in Map', [
+                'provider' => 'azure',
+                'function_name' => $functionName,
+                'available_functions' => array_keys($functionMap),
+            ]);
             return null;
         }
         
         $functionClass = $functionMap[$functionName];
         
+        // Debug: Log function class resolution
+        Log::info('Function Class Resolved', [
+            'provider' => 'azure',
+            'function_name' => $functionName,
+            'function_class' => $functionClass,
+        ]);
+        
         // Check if the function class exists
         if (!class_exists($functionClass)) {
-            Log::warning('Function class not found', [
-                'function' => $functionName,
-                'class' => $functionClass,
+            Log::error('Function Class Not Found', [
+                'provider' => 'azure',
+                'function_name' => $functionName,
+                'function_class' => $functionClass,
+                'class_exists' => false,
             ]);
             return null;
         }
         
-        return new $functionClass();
+        // Debug: Log successful class existence check
+        Log::info('Function Class Exists', [
+            'provider' => 'azure',
+            'function_name' => $functionName,
+            'function_class' => $functionClass,
+            'class_exists' => true,
+        ]);
+        
+        try {
+            $instance = new $functionClass();
+            
+            // Debug: Log successful instance creation
+            Log::info('Function Instance Created Successfully', [
+                'provider' => 'azure',
+                'function_name' => $functionName,
+                'function_class' => $functionClass,
+                'instance_class' => get_class($instance),
+            ]);
+            
+            return $instance;
+        } catch (\Exception $e) {
+            Log::error('Function Instance Creation Failed', [
+                'provider' => 'azure',
+                'function_name' => $functionName,
+                'function_class' => $functionClass,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+            return null;
+        }
     }
 
     /**
@@ -245,8 +386,16 @@ class AzureOpenAIProvider extends BaseAiProvider
      */
     private function sendFunctionResult(string $functionName, array $functionResult, array $messages): array
     {
+        // Debug: Log function result sending
+        Log::info('Sending Function Result Back to Azure', [
+            'provider' => 'azure',
+            'function_name' => $functionName,
+            'function_result' => $functionResult,
+            'original_messages_count' => count($messages),
+        ]);
+        
         // Add the function call and result to the message history
-        $messages[] = [
+        $functionCallMessage = [
             'role' => 'assistant',
             'function_call' => [
                 'name' => $functionName,
@@ -254,13 +403,31 @@ class AzureOpenAIProvider extends BaseAiProvider
             ],
         ];
         
-        $messages[] = [
+        $functionResultMessage = [
             'role' => 'function',
             'name' => $functionName,
             'content' => json_encode($functionResult),
         ];
         
+        $messages[] = $functionCallMessage;
+        $messages[] = $functionResultMessage;
+        
+        // Debug: Log updated message history
+        Log::info('Updated Message History', [
+            'provider' => 'azure',
+            'function_name' => $functionName,
+            'new_messages_count' => count($messages),
+            'added_function_call' => $functionCallMessage,
+            'added_function_result' => $functionResultMessage,
+        ]);
+        
         // Make another API call with the function result
+        Log::info('Making Follow-up API Call', [
+            'provider' => 'azure',
+            'function_name' => $functionName,
+            'total_messages' => count($messages),
+        ]);
+        
         return $this->sendMessage($messages);
     }
 }
