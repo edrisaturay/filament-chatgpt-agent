@@ -4,6 +4,7 @@ namespace EdrisaTuray\FilamentAiChatAgent\Providers;
 
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use MalteKuhr\LaravelGPT\FunctionManager;
 
 class AzureOpenAIProvider extends BaseAiProvider
 {
@@ -121,9 +122,24 @@ class AzureOpenAIProvider extends BaseAiProvider
 
             if ($response->successful()) {
                 $data = $response->json();
+                $message = $data['choices'][0]['message'];
+                
+                // Check if Azure wants to call a function
+                if (isset($message['function_call'])) {
+                    $functionName = $message['function_call']['name'];
+                    $functionArgs = json_decode($message['function_call']['arguments'], true);
+                    
+                    // Execute the LaravelGPT function
+                    $functionResult = $this->executeFunction($functionName, $functionArgs);
+                    
+                    // Send function result back to Azure
+                    return $this->sendFunctionResult($functionName, $functionResult, $messages);
+                }
+                
+                // Normal response
                 return [
                     'success' => true,
-                    'content' => $data['choices'][0]['message']['content'] ?? '',
+                    'content' => $message['content'] ?? '',
                     'usage' => $data['usage'] ?? null,
                 ];
             } else {
@@ -150,5 +166,101 @@ class AzureOpenAIProvider extends BaseAiProvider
                 'content' => 'Sorry, I encountered an error. Please try again.',
             ];
         }
+    }
+
+    /**
+     * Execute a function call using LaravelGPT FunctionManager.
+     *
+     * @param string $functionName
+     * @param array $arguments
+     * @return array
+     */
+    private function executeFunction(string $functionName, array $arguments): array
+    {
+        try {
+            // Create a function instance based on the function name
+            $function = $this->createFunctionInstance($functionName);
+            
+            if (!$function) {
+                return ['error' => 'Function not found: ' . $functionName];
+            }
+            
+            // Use LaravelGPT FunctionManager to execute the function
+            $functionManager = FunctionManager::make($function);
+            $result = $functionManager->call($arguments);
+            
+            return $result->content;
+        } catch (\Exception $e) {
+            Log::error('Function execution error', [
+                'function' => $functionName,
+                'arguments' => $arguments,
+                'error' => $e->getMessage(),
+            ]);
+            
+            return ['error' => $e->getMessage()];
+        }
+    }
+
+    /**
+     * Create a function instance based on the function name.
+     *
+     * @param string $functionName
+     * @return mixed|null
+     */
+    private function createFunctionInstance(string $functionName)
+    {
+        // Map function names to their corresponding LaravelGPT function classes
+        $functionMap = [
+            'application_case_query' => \MalteKuhr\LaravelGPT\Functions\ApplicationCaseQueryFunction::class,
+            'appointment_stats' => \MalteKuhr\LaravelGPT\Functions\AppointmentStatsFunction::class,
+            'visa_type_info' => \MalteKuhr\LaravelGPT\Functions\VisaTypeInfoFunction::class,
+            'system_info' => \MalteKuhr\LaravelGPT\Functions\SystemInfoFunction::class,
+        ];
+        
+        if (!isset($functionMap[$functionName])) {
+            return null;
+        }
+        
+        $functionClass = $functionMap[$functionName];
+        
+        // Check if the function class exists
+        if (!class_exists($functionClass)) {
+            Log::warning('Function class not found', [
+                'function' => $functionName,
+                'class' => $functionClass,
+            ]);
+            return null;
+        }
+        
+        return new $functionClass();
+    }
+
+    /**
+     * Send function result back to Azure OpenAI.
+     *
+     * @param string $functionName
+     * @param array $functionResult
+     * @param array $messages
+     * @return array
+     */
+    private function sendFunctionResult(string $functionName, array $functionResult, array $messages): array
+    {
+        // Add the function call and result to the message history
+        $messages[] = [
+            'role' => 'assistant',
+            'function_call' => [
+                'name' => $functionName,
+                'arguments' => json_encode($functionResult),
+            ],
+        ];
+        
+        $messages[] = [
+            'role' => 'function',
+            'name' => $functionName,
+            'content' => json_encode($functionResult),
+        ];
+        
+        // Make another API call with the function result
+        return $this->sendMessage($messages);
     }
 }
